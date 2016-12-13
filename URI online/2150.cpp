@@ -1,0 +1,18 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+main(){
+	int i,j,conta;
+	string vogais,frase;
+	
+	while(getline(cin,vogais)){
+		getline(cin,frase);
+		
+		for(i=0,conta=0;i<frase.size();i++){
+			if(find(vogais.begin(),vogais.end(),frase[i])!=vogais.end()){
+				conta++;
+			}
+		}
+		cout << conta << endl;
+	}
+}

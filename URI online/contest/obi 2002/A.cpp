@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+main(){
+	int a,voo,i,j,k,x,y,soma,cont=1,maior;
+	bool entrou = false;
+	map<int,int> v;
+	map<int,int>::iterator it;
+	while(cin >> a >> voo and a and voo){
+		if(entrou)
+			cout << endl;
+		int aero[a][a];
+		for(i=0;i<a;i++){
+			for(j=0;j<a;j++){
+				aero[i][j] =0;
+			}
+		}
+		for(i=0;i<voo;i++){
+			cin >> x >>y;
+			aero[x-1][y-1] = 1;
+		}
+		for(i=0,maior = 0,soma=0;i<a;i++,soma = 0){
+			for(j=0;j<a;j++){
+				if(aero[i][j]==1)
+					soma++;
+				if(aero[j][i]==1)
+					soma++;	
+			}
+			v[i] = soma;
+			if(soma>maior)
+				maior = soma;	
+		}
+		cout << "Teste " << cont << endl;
+		bool p = false;
+		for(it=v.begin();it!=v.end();++it){
+			if(it->second == maior){
+				if(p)
+					cout << " ";
+				cout << it->first+1;
+				p = true;
+			}
+		}
+		entrou = true;
+		cout << endl;
+		cont++;
+		v.clear();
+	}
+
+}

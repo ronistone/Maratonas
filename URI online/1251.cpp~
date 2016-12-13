@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef struct{
+	int c;
+	int cont;
+}caracter;
+bool verifica(caracter i,caracter j){
+	if(i.cont>j.cont)
+		return false;
+	else if(i.cont < j.cont)
+		return true;
+	else{
+		if(i.c<j.c)
+			return true;
+		else
+			return false;
+	}
+}
+
+main(){
+	string e;
+	vector<caracter> C;
+	bool in,o=false;
+	while(getline(cin,e)){
+		if(o)
+			cout << endl;
+		for(int i =0;i<e.size();i++){
+			in = false;
+			for(int j = 0;j<C.size();j++){
+				if(C[j].c==(int)e[i]){
+					C[j].cont++;
+					in = true;
+					break;
+				}
+			}
+			if(!in){
+				caracter aux;
+				aux.c = (int)e[i];
+				aux.cont = 1;
+				C.push_back(aux);
+			}
+			
+		}
+		sort(C.begin(),C.end(),verifica);
+		for(int i =0;i<C.size();i++){
+			cout << C[i].c << " " << C[i].cont << endl;
+		}
+		o = true;
+		C.clear();
+	}
+
+}

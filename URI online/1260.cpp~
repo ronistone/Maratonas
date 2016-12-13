@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+main(){
+	map<char*,int> m;
+	map<char*,double> saida;
+	int i,j,n,total;
+	char entrada[100];
+	cin >> n;
+	setbuf(stdin,NULL);
+	for(i=0,total=0;i<n;i++,total = 0){
+		getchar();
+		while(fgets(entrada,100,stdin)!=NULL){
+//			cout << strlen(entrada) << endl;
+			if(strlen(entrada)==0)
+				break;
+			total++;
+			m[entrada]++;
+			entrada[0] = '\0';
+		}
+		map<char*,int>::iterator it;
+		if(i!=0)
+			cout << endl;
+		for(it=m.begin();it!=m.end();it++){
+			cout << fixed << setprecision(4) << it->first << " " << ((double)it->second/total)*100 << endl;
+				
+		}
+		m.clear();
+	}
+	
+}

@@ -1,0 +1,60 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int busca(vector<string> n,string p){
+	for(int i=0;i<n.size();i++){
+		if(n[i].compare(p)==0)
+			return i;
+	}
+	return -1;
+}
+
+main(){
+	string entrada,nome;
+	vector<string> v,n;
+	map<string,int> m;
+	int a,p,r,i,j,maior;
+	
+	
+	while(cin >> p >> a >> r and (a or p or r)){
+		cin.ignore();
+		for(i=0;i<p;i++){
+			getline(cin,entrada);
+			v.push_back(entrada);		
+		}
+		for(i=0,maior = 0;i<a;i++){
+			getline(cin,nome);
+			vector<bool> aux(p,false);
+			int a1;
+			for(j=0,a1=0;j<r;j++){
+				getline(cin,entrada);
+				int aux1 = busca(v,entrada);
+				if(aux1!=-1 and not aux[aux1]){
+					a1++;
+					aux[aux1] = true;
+				}
+			}
+			if(m[nome]<a1)
+				m[nome] = a1;
+			if(m[nome]>maior)
+				maior = m[nome];
+			if(find(n.begin(),n.end(),nome)!=n.end())
+				n.push_back(nome);
+		}
+		sort(n.begin(),n.end());
+		bool achou = false;
+		for(i=0;i<n.size();i++){
+			if(m[n[i]]==maior){
+				if(achou)
+					cout << ", ";
+				cout << n[i];
+				achou = true;
+			}
+		}
+		cout << endl;
+		m.clear();
+		n.clear();
+		v.clear();		
+	}
+
+}

@@ -1,0 +1,24 @@
+flutuante: 1
+cutoff: 1e-08
+2
+flutuante: 1
+cutoff: 0
+2
+flutuante: 1
+cutoff: 0
+2
+flutuante: 1
+cutoff: 0
+2
+flutuante: 1
+cutoff: 0
+2
+flutuante: 1
+cutoff: 0
+2
+flutuante: 1
+cutoff: 0
+2
+flutuante: 1
+cutoff: 0
+2

@@ -1,0 +1,68 @@
+#include <bits/stdc++.h>
+using namespace std;
+/*vector<long long>v;
+int MAX = 400;
+bool prime[400];
+
+
+void sieve(int n){
+	long long int i,j;	
+	memset(prime, true,sizeof(prime));
+	v.clear();
+	for(i=2;i<MAX;i++){
+		if(prime[i]==true){
+			v.push_back(i);
+			for(j=i*i;j<=MAX;j+=i)
+				prime[j] =false;
+		}
+	}
+}
+		
+
+
+main(){
+	int n;
+	cin >> n;
+	sieve(n);
+	int soma=0;
+		double limite=ceil(sqrt(n));
+	for(int i=limite,x=0;i<MAX and  x <= 10;i++){
+		if(prime[i]==true){
+			soma+=(limite)+i;
+			x++;
+		}
+	}
+	cout << soma << endl;
+}*/
+
+bool vPrimo(int n){
+	int i,j;
+	int fim = ceil(sqrt(n));
+	bool primo = true;
+	for(i=2;i<fim;i++){
+		if(n%i==0){
+			primo = false;
+			break;
+		}
+	}
+	return primo;
+}
+
+main(){
+	int n,i,soma=0,x;
+	cin >> n;
+	for(i=n,x=0;x<10;i++){
+		if(vPrimo(i)){
+			x++;
+			soma+=i;
+		}
+	}
+	cout << soma << "km/h" << endl;
+	cout << trunc((6*pow(10,7)/soma)) << " h / " << trunc(((6*pow(10,7))/soma)/24) << " d" << endl;
+}
+
+
+
+
+
+

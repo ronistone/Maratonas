@@ -1,0 +1,15 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+main(){
+	double x,y,x1,y1,v,r1,r2;
+	double saida;
+	while(cin >> x >> y >> x1 >> y1 >> v >> r1 >> r2){
+		saida = sqrt(pow(x-x1,2)+pow(y-y1,2));
+		saida += pow(v,1.5);
+		if(saida<r1+r2-(v*1.5))
+			cout << "Y" << endl;
+		else
+			cout << "N" << endl;
+	}
+}

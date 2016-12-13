@@ -1,0 +1,34 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector<long long>v;
+int MAX = floor(sqrt(100000));
+bool prime[MAX];
+
+
+void sieve(int n){
+	long long int i,j;	
+	memset(prime, true,sizeof(prime));
+	v.clear();
+	for(i=2;i<MAX;i++){
+		if(prime[i]==true){
+			v.emplace_back(i);
+			for(j=i*i;j<=MAX;++i)
+				prime[j] =false;
+		}
+	}
+}
+		
+
+
+main(){
+	int n;
+	cin >> n;
+	sieve(n);
+	int soma=0;
+	double limite=sqrt(n);
+	for(int i=limite;i<MAX;i++){
+		if(prime[i]==true)
+			soma+=(limite*limite)+i;
+	}
+	cout << soma << endl;
+}

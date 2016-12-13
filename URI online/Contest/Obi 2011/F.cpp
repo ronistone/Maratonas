@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef pair<int,int> ii;
+typedef vector<int> vi;
+
+vector<vi> Grafo(50005);
+vi tarefas;
+bool visitados[50005];
+int Grau[50005];
+int n,m,s;
+bool kahn(){
+	int i;
+	priority_queue<int,vi,greater<int> >F;
+	for(i=0;i<n;i++){
+		if(Grau[i]==0){
+			F.push(i);
+		}
+	}
+	if(F.empty()){
+		cout << "*\n";
+		return false;
+	}
+	while(!F.empty()){
+		int aux = F.top();
+		tarefas.push_back(aux);
+		F.pop();
+		for(i=0;i<Grafo[aux].size();i++){
+			if(!visitados[Grafo[aux][i]]){
+				if(--Grau[Grafo[aux][i]]==0){
+					F.push(Grafo[aux][i]);
+					visitados[Grafo[aux][i]] = true;
+				}
+			}
+			else{
+				cout << "*\n";
+				return false;
+			}
+		}
+	}
+	if(tarefas.size()==n){
+		for(i=0;i<tarefas.size();i++)
+			cout << tarefas[i] << "\n";
+		return true;
+	}
+	else
+		cout << "*\n";
+		return false;
+}
+
+void reset(){
+	for(int i=0;i<n;i++){
+		Grafo[i].clear();
+		Grau[i]=0;
+	}
+	tarefas.clear();
+	memset(visitados,false,sizeof(visitados));
+}
+
+main(){
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	int from,to;
+	cin >> n >> m;
+	reset();
+	for(int i=0;i<m;i++){
+		cin >> from >> to;
+		Grafo[from].push_back(to);
+		Grau[to]++;
+	}
+	kahn();
+}

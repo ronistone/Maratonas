@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+#ifdef WIN32
+#define PAUSE 1
+#else
+#define PAUSE 0
+#endif
+
+int main()
+{
+	int a,b,x;
+	
+	scanf("%d", &a);
+	scanf("%d", &b);
+	
+	x= a + b;
+	
+	printf("X = %d", x);
+
+
+	if(PAUSE==1)
+		system("pause");
+	else
+		system("read -p \"Pressione ENTER Para Sair.\" Saindo");
+}

@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool verificaSUB(string a, string sub){
+	int i,x;
+			for(i=0,x=0;i<a.size();i++){
+				if(a[i]==sub[x]){
+					x++;
+				}
+				if(x==sub.size())
+					return true;
+			}
+	return false;
+}
+
+main(){
+
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	string a,b;
+	int n,z,i,j;
+
+	cin >> n;
+	cin.ignore();
+	for(i=0;i<n;i++){
+		getline(cin,a);
+		cin >> z;
+		cin.ignore();
+		for(j=0;j<z;j++){
+			getline(cin,b);
+			if(verificaSUB(a,b))
+				printf("Yes\n");
+			else
+				printf("No\n");
+		}
+	}
+}

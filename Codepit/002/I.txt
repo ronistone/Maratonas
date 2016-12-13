@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+main(){
+	int n,i,j,a,maior,aux,verifica;
+	double meio,fim,inicio,auxcima,auxbaixo;
+	std::vector<int> v;
+
+	while(cin >> n >> a and (a!=0 or n!=0)){
+		maior = 0;
+		for(i=0,verifica=0;i<n;i++){
+			cin >> aux;
+			if(aux > maior)  									//inserindo no vector e verificando qual o maior valor
+				maior = aux;
+			v.push_back(aux);
+			verifica+=aux;
+		}
+		if(a==0 or verifica==a){
+			cout << ":D" << endl;
+		}
+		else if(a>verifica){
+			cout << "-.-" << endl;
+		}
+		else{
+			meio = maior/2;
+			fim = maior;
+			inicio = 0; 
+			while(meio!=inicio or meio!=fim){ 					//busca binaria
+				for(i=0,auxcima=0,auxbaixo=0;i<v.size();i++){	//faz a soma dos valores abaixo e a cima do corte
+					if(v[i]>meio){
+						auxcima+= v[i]-meio;
+					}
+					else
+						auxbaixo+=v[i];
+				}
+				if(auxcima==a or auxbaixo==a)
+					break;
+				else if(auxcima>a)
+					inicio = meio;
+				else
+					fim = meio;
+				meio = (fim+inicio)/2;
+			}
+			cout << fixed << setprecision(4) << meio << endl;
+		}
+
+	}
+}

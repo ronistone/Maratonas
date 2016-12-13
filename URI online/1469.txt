@@ -1,0 +1,13 @@
+18
+18
+21
+18
+*
+18
+Posição 1idade: 26posicao 2
+Posição 2idade: 21posicao 4
+Posição 3idade: 33posicao 3
+Posição 4idade: 33posicao 7
+Posição 5idade: 42posicao 5
+Posição 6idade: 22posicao 6
+Posição 7idade: 18posicao 1

@@ -1,0 +1,20 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+main(){
+	int n,i,j;
+	int b[100001];
+	cin >> n;
+	for(i=0;i<n;i++){
+		scanf("%d",&b[i]);
+	}
+	int cont = 0;
+	for(i=0;i<n;i++){
+		for(j=i;j<n;j++){
+			if(i!=j and b[i] > b[j] and i < j){
+				cont++;
+			}
+		}
+	}
+	printf("%d\n",cont);
+}

@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int binary(vector<int> v, int b){
+	int meio,fim,inicio;
+	inicio = 0;
+	fim = v.size()-1;
+	
+	while(inicio<=fim){
+		meio = (fim+inicio)/2;
+		if(b==v[meio]){
+			return meio;
+		}
+		if(b<=v[meio])
+			fim = meio-1;
+		else if(b>v[meio])
+			inicio = meio+1;
+	}
+		return -2;
+}
+
+main(){
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	int n;
+	int ini,fim;
+	int i,j,b;
+	vector <int> v;
+	
+	while(cin >> n){
+		for(i=0;i<n;i++){
+			cin >> ini >> fim;
+			for(j=ini;j<=fim;j++){
+				v.push_back(j);
+			}
+		}
+		int b;
+		cin >> b;
+		sort(v.begin(),v.end());
+		
+			int saida = binary(v,b);
+			for(i=saida;i<v.size();i++){
+				if(v[i]!=v[saida])
+					break;
+			}
+			while(v[saida]==b){
+				saida--;
+			}
+		if(saida+1<0)
+			cout << b << " not found" << endl;
+		else
+			cout << b << " found from " << saida+1 << " to " << i-1 << endl;
+		v.clear();
+	}
+
+}

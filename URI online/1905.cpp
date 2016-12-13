@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define mp make_pair
+#define F first
+#define S second
+typedef pair<int,int> ii;
+bool mapa[5][5];
+int dx[]={-1,1,0,0};
+int dy[]={0,0,-1,1};
+bool valid(int n,int m){
+	if(n<0 or n>=5) return false;
+	if(m<0 or m>=5) return false;
+	if(mapa[n][m]) return false;
+	return true;
+}
+
+bool bfs(){
+	queue<ii> q;
+	q.push(mp(0,0));
+	
+	while(!q.empty()){
+		ii x = q.front();
+		q.pop();
+		mapa[x.F][x.S] = true;
+		if(x.F== 4 and x.S==4)
+			return true;	
+		for(int i=0;i<4;i++){
+			if(valid(x.F+dx[i],x.S+dy[i]))
+				q.push(mp(x.F+dx[i],x.S+dy[i]));
+		}
+		
+	}
+return false;
+}
+
+
+main(){
+	int i,j,k,aux,n;
+	
+	cin >> n;
+	//cin.ignore();
+	
+	while(n--){
+		memset(mapa,false,sizeof(mapa));
+		for(i=0;i<5;i++){
+			for(j=0;j<5;j++){
+				cin >> mapa[i][j];
+			}
+		}
+		if(bfs())
+			cout << "COPS\n";
+		else
+			cout << "ROBBERS\n";
+	}
+}

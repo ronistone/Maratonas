@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+main(){
+	string entrada;
+	map<char,bool> m;
+	int i,n,j;
+	cin >> n;
+	
+	for(i=0;i<n;i++){
+		cin.ignore();
+		getline(cin,entrada);
+		for(j=0;j<entrada.size();j++){
+			m[entrada[j]] = true;
+		}
+		if(m.size()==26)
+			cout << "frase completa" << endl;
+		else if(m.size()>13)
+			cout << "frase quase completa" << endl;
+		else
+			cout << "frase mal elaborada" << endl;
+		m.clear();
+	}
+}
