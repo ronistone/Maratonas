@@ -1,92 +1,100 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-#define mp make_pair
-#define F first
-#define S second
-#define INF -1000000
+
 typedef long long int ll;
-typedef pair<ll,ll> ii;
-typedef pair<ll,ii> iii;
-typedef vector<iii> viii;
+
+typedef struct no{
+	ll pre, suf, mid;
+	ll sum;
+	no(ll p_,ll s_,ll sum_,ll mid_): pre(p_),suf(s_),sum(sum_),mid(mid_){}
+	no(){}
+	void set(ll p,ll s,ll su,ll m){ pre = p; suf = su; sum = s; mid = m; }
+	ll getPre(no a){ return max(sum+a.pre,pre); }
+	ll getSuf(no a){ return max(suf,sum+a.suf); }
+}V;
+inline bool operator ==(const V &a, const V &b){
+	return a.pre==b.pre and a.suf==b.suf and a.sum==b.sum and a.mid==b.mid;
+}
+V merge(V a, V b){
+	
+	V ans;
+	
+	ans.sum = a.sum+b.sum;
+	ans.pre = max(a.pre,a.sum+b.pre);
+	ans.suf = max(b.suf,b.sum+a.suf);
+	ans.mid = max(a.mid,max(b.mid,a.suf+b.pre));	
+	
+	return ans;
+}
+
+typedef vector<V> seg;
 typedef vector<ll> vi;
 
-viii st;
-vi A;
+seg st;
+ll A[50100];
 int n,m;
 
-ll maior(iii a){ return max(a.F,max(a.S.F,a.S.S));}
-void build(int P, int L, int R){
-	if(L==R){
-		st[P] = mp(A[L],mp(A[L],A[L]));
-	}
+void build(ll P, ll L, ll R){
+	if(L==R)
+		st[P].set(A[L],A[L],A[L],A[L]);
 	else{
-		int nxt = P << 1;
-		int mid = (L+R) >> 1;
+		ll nxt = P << 1;
+		ll mid = (L+R) >> 1;
+		
 		build(nxt,L,mid);
 		build(nxt+1,mid+1,R);
-		ll m1 = maior(st[nxt]);
-		ll m2 = maior(st[nxt+1]);
-		st[P] = mp(m1,mp(m1+m2,m2));
+		st[P] = merge(st[nxt],st[nxt+1]);
+		//st[P].set(st[nxt].getPre(st[nxt+1]),st[nxt].sum+st[nxt+1].sum,st[nxt+1].getSuf(st[nxt]),st[nxt].suf+st[nxt+1].pre);
 	}
 }
-void update(int P, int L, int R, int i, int value){
-
-	// total overlap
-	if(L==R and L==i){
-		st[P] = mp(value,mp(value,value));
-		return;
-	}	
-	// no overlap
-	if(L>i or R<i) return;
+void update(ll P, ll L, ll R, ll X, ll value){
+		
+	if(L>X or R < X) return;
+	if(L==X and R==X){ st[P].set(value,value,value,value); return;}
 	
-	// partial overlap
-	int nxt = P << 1;
-	int mid = (L+R) >> 1;
-	update(nxt,L,mid,i,value);
-	update(nxt+1,mid+1,R,i,value);
-	ll m1 = maior(st[nxt]);
-	ll m2 = maior(st[nxt+1]);
-	st[P] = mp(m1,mp(m1+m2,m2));		
+	ll nxt = P << 1;
+	ll mid = (L+R) >> 1;
+	
+	update(nxt,L,mid,X,value);
+	update(nxt+1,mid+1,R,X,value);
+	st[P] = merge(st[nxt],st[nxt+1]);
+	//st[P].set( st[nxt].getPre(st[nxt+1]) , st[nxt].sum+st[nxt+1].sum , st[nxt+1].getSuf(st[nxt]), st[nxt].suf+st[nxt+1].pre);
 }
-iii query(int P, int L, int R, int i, int j){
-	if(R<i or L>j) return mp(INF,mp(INF,INF));
+V query(ll P, ll L, ll R, ll i, ll j){
+	V t = V(-10e14,-10e14,-10e14,-10e14);
+	if(L>j or R<i) return t;
 	if(L>=i and R<=j) return st[P];
 	
-	int nxt = n << 1;
-	int mid = (L+R) >> 1;
-	iii q1 = query(nxt,L,mid,i,j);
-	iii q2 = query(nxt+1,mid+1,R,i,j);
-	if(q1.F==INF and q1.S.F==INF and q1.S.S==INF) return q2;
-	if(q2.F==INF and q2.S.F==INF and q2.S.S==INF) return q1;
-	ll m1 = maior(q1);
-	ll m2 = maior(q2);
-	if(max(m1,m2)==m1)
-		return q1;
-	else
-		return q2;	
+	ll nxt = P << 1;
+	ll mid = (L+R) >> 1;
+	V q = query(nxt,L,mid,i,j);
+	V q1 = query(nxt+1,mid+1,R,i,j);
+	if(q==t) return q1;
+	if(q1==t) return q;
+	return merge(q,q1);
+	return V( q.getPre(q1) , q.sum+q1.sum , q1.getSuf(q), q.suf+q1.pre);
+	
 }
 
 main(){
-	int i,j,k,o,a,b;
+	int x,y,op;
 	
 	while(cin >> n){
-		st.resize(n << 2);
-		A.resize(n << 1);
-		st.assign(n << 2,mp(0,mp(0,0)));
-		A.assign(n << 1,0);
-		for(i=0;i<n;i++){
-			cin >> A[i];	
+		for(int i=0;i<n;i++){
+			cin >> A[i];
 		}
+		st.resize(n << 2);
+		st.assign(n << 2, V(0,0,0,0));
 		build(1,0,n-1);
 		cin >> m;
-		
-		for(i=0;i<m;i++){
-			cin >> o >> a >> b;
-			if(o==0)
-				update(1,0,n-1,a-1,b);
-			else{
-				iii aux = query(1,0,n-1,a-1,b-1);
-				cout << max(aux.F,max(aux.S.F,aux.S.S)) << endl;
+		for(int i=0;i<m;i++){
+			cin >> op >> x >> y;
+			if(op){
+				V q = query(1,0,n-1,x-1,y-1);
+				cout << max(q.pre,max(q.sum,max(q.mid,q.suf))) << endl;
+			}
+			else if(!op){
+				update(1,0,n-1,x-1,y);
 			}
 		}
 	}

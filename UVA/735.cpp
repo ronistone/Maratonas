@@ -10,25 +10,27 @@ main(){
 	
 	while(cin >> n and n > 0){
 		ll perm = 0,comb=0;
-		int pontos[200];
-		for(int i=0;i<62;i++){
-				pontos[i] = i;
-				pontos[i*2] = i*2;
-				pontos[i*3] = i*3;
-		}
-		pontos[61] = 50;
-		for(ll d1=0;d1<62;d1++){
-			for(ll d2=0;d2<62;d2++){
-				for(ll d3=0;d3<62;d3++){
-					if(pontos[d1]+pontos[d2]+pontos[d3]==n){
-						comb++;
-						perm++;
+		map<int,int> pcdontos;
+		map<int,int>::iterator a,b,c;
+		if(n <=180){
+			for(int i=0;i<21;i++){
+					pontos[i] = i;
+					pontos[i*2] = i*2;
+					pontos[i*3] = i*3;
+			}
+			pontos[61] = 50;
+			for(a=pontos.begin();a!=pontos.end();a++){
+				for(b=pontos.begin();b!=pontos.end();b++){
+					for(c=pontos.begin();c!=pontos.end();c++){
+						if(a->second+b->second+c->second==n){
+							perm++;
+							if(a->first <= b->first and b->first <= c->first)
+								comb++;
+						}
+						
 					}
 				}
-			}
-		}
-		if(n <=180){
-			
+			}			
 		}
 		if(comb == 0)
 			cout << "THE SCORE OF " << n << " CANNOT BE MADE WITH THREE DARTS.\n"
@@ -38,4 +40,5 @@ main(){
 				 << "NUMBER OF PERMUTATIONS THAT SCORES " << n << " IS " << perm << ".\n"
 				 << "**********************************************************************\n";
 	}
+	cout << "END OF OUTPUT\n";
 }
