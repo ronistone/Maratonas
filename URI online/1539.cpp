@@ -1,72 +1,89 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-#define MP make_pair
-#define F first
-#define S second
-typedef long long int ll;
-typedef pair<int,int> ii;
-typedef pair<int,ii> iii;
-typedef pair<ll,iii> iiii;
-typedef vector<iii> viii;
-viii Grafo;
-ll dist[101];
-bool visitados[101];
-
-int n,m;
-
-ll dista(int x1, int y1, int x2, int y2){
-	return (ll)sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+#define EPS 1e-15
+typedef int ll;
+ll n,m;
+typedef struct no{
+	int x,y,d;
+	no(int x_,int y_,int d_): x(x_), y(y_), d(d_) {}
+	no() {}
+}antena;
+typedef pair<double,ll> ii;
+antena at[110];
+inline double dista(antena a ,antena b){
+	return sqrt((a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
 }
-
-ll dijkstra(int ini,int dest){
-	priority_queue<iiii> pq;
-	for(int i=0;i<n;i++) dist[i] = 10000000;
-	memset(visitados,false,sizeof(visitados));
-	pq.push(MP(0,MP(ini,MP(Grafo[ini].S.F,Grafo[ini].S.S))));
-	dist[ini] = 0;
+inline ll dijkstra(int ini, int fim){
+	double dist[n+1];
+	for(int i=0;i<=n;i++) dist[i] = 100000000.0;
+	priority_queue<ii, vector<ii>, greater<ii> > pq;
+	pq.push(make_pair(0.0,ini));
+	dist[ini] = 0.0;
 	while(!pq.empty()){
-		ll custo = pq.top().F;
-		int x = pq.top().S.S.F;
-		int y = pq.top().S.S.S;
-		int posi = pq.top().S.F;
-		pq.pop();
-		visitados[posi] = true;
+		double d = pq.top().first;
+		ll v = pq.top().second;
+		pq.pop();	
+		if(v == fim) return trunc(d);
 		for(int i=0;i<n;i++){
-			int xf = Grafo[i].S.F;
-			int yf = Grafo[i].S.S;
-			ll d = dista(x,y,xf,yf);
-			if(d < Grafo[posi].F and d+custo<=dist[i]){
-				dist[i] = d+custo;
+			double aux = dista(at[v],at[i]);
+			if(aux < at[v].d and (d+aux) < dist[i]){
+				dist[i] = d+aux;
+				pq.push(make_pair(aux+d,i));
 			}
-			else
-				continue;
-			if(!visitados[i])
-				pq.push(MP(d+custo,MP(i,MP(xf,yf))));
 		}
-		
 	}
-	
-	if(dist[dest]==10000000)
-		return -1;
+	return -1;
+}
+
+inline void scanint(ll *x)
+{
+	register char c = getchar_unlocked();
+	*x = 0;
+	for(; (c<48)||(c>57);c = getchar_unlocked());
+	for(; (c>47)&&(c<58);c = getchar_unlocked())
+		*x = (int)((((*x)<<1) + ((*x)<<3)) + c - 48);
+}
+inline void printint(ll n)
+{
+	if(n == 0)
+	{
+		putchar_unlocked('0');
+		putchar_unlocked('\n');
+	}
+	else if(n == -1)
+	{
+		putchar_unlocked('-');
+		putchar_unlocked('1');
+		putchar_unlocked('\n');
+	}
 	else
-		return dist[dest];
-}
-
-main(){
-	int x,y,w,i,j,from,to;
-
-	while(cin >> n and n){
-		
-		for(i=0;i<n;i++){
-			cin >> x >> y >> w;
-			Grafo.push_back(MP(w,MP(x,y)));
+	{
+		char buf[11];
+		buf[10] = '\n';
+		int i = 9;
+		while(n)
+		{
+			buf[i--] = n % 10 + '0';
+			n /= 10;
 		}
-		cin >> m;
-		for(i=0;i<m;i++){
-			cin >> from >> to;
-			cout << trunc(dijkstra(from-1,to-1)) << endl;
-		}
-		Grafo.clear();
+		while(buf[i] != '\n')
+			putchar_unlocked(buf[++i]);
 	}
 }
+main(){
+	int x,y,d,from,to;
+	scanint(&n);
+	while(n){
+		for(int i=0;i<n;i++){
+			scanint(&x);scanint(&y);scanint(&d);
+			at[i] = antena(x,y,d);
+		}
+		scanint(&m);
+		for(int i=0;i<m;i++){
+			scanint(&from);scanint(&to); from--;to--;
+			printint(dijkstra(from,to));
+		}
+		scanint(&n);
+	}
+}
+

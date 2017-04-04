@@ -1,31 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define EPS 1e-9
+#define EPS 1e-6
 
 typedef long long int ll;
 
-double num,mid,ans;
-ll p,q,r,s,t,u;
-
-
-ll bs(double lo,double hi){
-	mid = (lo+hi)/2.0;
-	if(fabs(hi-lo) < EPS) return -1;
-	ans = p*(1.0/pow(M_E,mid))+q*sin(mid)+r*cos(mid)+s*tan(mid)+t*(mid*mid)+u;
-	if(ans == 0.0000000000000000) return mid;
-	if(num < mid) return bs(lo,mid-0.000000001);
-	if(num > mid) return bs(mid+0.000000001,hi);
-}
-
 
 main(){
+	int p,q,r,s,t,u;
 	
 	
 	while(cin >> p >> q >> r >> s >> t >> u){
-		double aux = bs(0.0000000000,1.0000000000);
-		if(aux == -1)
+		double ini= 0.000000,fim = 1.000000, mid = 0.500000;
+		bool achou = false;
+		
+		while(ini<=fim){
+			double ans = p*exp(-mid)+q*sin(mid)+r*cos(mid)+s*tan(mid)+t*(mid*mid)+u;
+			if(fabs(ans) <= EPS){
+				cout << fixed << setprecision(4) << mid << endl;
+				achou = true;
+				break;
+			}
+			else if(ans < EPS)
+				fim = mid - 0.000000001;
+			else
+				ini = mid + 0.000000001;
+			mid = (ini+fim)/2;
+		}
+		if(!achou)
 			cout << "No solution\n";
-		else
-			cout << fixed << setprecision(4) << aux << endl;
 	}
+
+
 }

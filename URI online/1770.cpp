@@ -1,19 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define pb push_back
 
-typedef long long int ll;
-int n;
-vector<ll> D;
+typedef int ll;
 
-inline bool scanint(ll *x)
+ll m,k;
+ll M[1010];
+bool verifica[2000];
+
+inline void scanint(ll *x)
 {
 	register char c = getchar_unlocked();
 	*x = 0;
 	for(; (c<48)||(c>57);c = getchar_unlocked());
 	for(; (c>47)&&(c<58);c = getchar_unlocked())
 		*x = (int)((((*x)<<1) + ((*x)<<3)) + c - 48);
-	return true;
 }
 inline void printint(ll n)
 {
@@ -45,36 +45,30 @@ inline void printint(ll n)
 
 
 main(){
-	ll aux;
-	while(scanf("%lld",&aux)!=EOF){
-		if(aux!=-999999)
-			D.pb(aux);
-		ll maior = aux;
-		while(scanint(&aux) and aux!=-999999){
-			if(aux!=-999999)
-				D.pb(aux);
-			if(aux > maior)
-				maior = aux;
+	ll aux,i;
+	ll sum;
+	ll ans;
+	while(scanf("%d %d",&m,&k)!=EOF){
+		sum = 0;
+		ans = m;
+		for(i=0;i<m;i++){
+			scanint(&M[i]);
+			verifica[i+1] = false;
 		}
-		ll ans = -999999999;
-		ll mul = 1;
-		n = D.size();
-		for (int i = 0; i < n; i++) {
-			if(D[i]!=0){
-				mul *= D[i];
-				ans = max(ans, mul);
-				//if(ans!=mul)
-				//	mul = 1;
+		for(i=0;i<k;i++){
+			scanint(&aux);
+			if(ans > 0){
+				if(!verifica[aux]){
+					verifica[aux] = true;
+					ans--;
+				}
+				sum += M[aux-1];
 			}
-			else{
-				mul = 1;
-			}
-			//if (mul < 0) mul = 1;
-			}
-		if(maior > ans)
-			ans = maior;
-		printint(ans);
-		D.clear();
+		}
+		if(ans!=0)
+			puts("-1");
+		else
+			printint(sum);
 	}
-	
+
 }

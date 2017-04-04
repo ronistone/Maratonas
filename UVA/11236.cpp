@@ -1,30 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
-
+#define EPS 1e-9
 typedef long long int ll;
-
 main(){
-	double a,b,c,d;
 	
-	for(a=0.01;4 * a<=20.0;a+=0.01){
-		for(b=a;a+3*b<=20.0;b+=0.01){
-				for(c=b;a+b+2*c<=20.0;c+=0.01){
-					d = 20.0 - (a + b + c);
-					double t = a*b*c*d;
-					//if(t >19.9 and t <= 20.1)
-					//cout << a << " " << b << " " << c << " " << d << " : " << t << endl;
-					if(d < 19.0 and t==20.0){
-						
-						if(d > c)
-							printf("%0.2lf %0.2lf %0.2lf %0.2lf\n",a,b,c,d);
-						else if(d < c and d > b)
-							printf("%0.2lf %0.2lf %0.2lf %0.2lf\n",a,b,d,c);
-						else if(d < b and d > a)
-							printf("%0.2lf %0.2lf %0.2lf %0.2lf\n",a,d,b,c);
-						else
-							printf("%0.2lf %0.2lf %0.2lf %0.2lf\n",d,a,b,c);
-					}
+	double a,b,c,d;
+	ll i,j,k,l,ans;
+	
+	for(i=1;4 * i<=2000;i++){
+		for(j=i;i+3*j<=2000;j++){
+			for(k=j;i+j+2*k<=2000;k++){
+				
+				ll s = i*j*k;
+				ll p = i+j+k;
+				
+				if(s <=1000000) continue;
+				
+				l = (1000000 * p) / (s - 1000000);
+				
+				if( l < k or p+l > 2000) continue;
+				
+				a = i/100.0;
+				b = j/100.0;
+				c = k/100.0;
+				d = l/100.0;
+				if(fabs((p+l)/100.0 - (s*l)/100000000.0) < EPS){
+					cout << fixed << setprecision(2) << a << " " << b << " " << c << " " << d << endl;
+				}
 			}
 		}
 	}
+
+
 }

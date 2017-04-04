@@ -1,42 +1,33 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int ShellSort(int num[],int tam) {
-     int i, temp, flag = 1, numLength = tam;
-     int d = numLength,cont=0;
-     while( flag || (d > 1)) {                    
-          flag = 0;                               
-          d = (d+1) / 2;
-          for (i = 0; i < (numLength - d); i++) {
-               if (num[i + d] > num[i]) {
-                      temp = num[i + d];         
-                      num[i + d] = num[i];
-                      num[i] = temp;
-                      flag = 1;
-                      cont++;
-               }
-          }
-     }
-     return cont;
-}
+vector<int> A(100010);
+vector<int> B(100010);
 
 main(){
-	ios_base::sync_with_stdio(0);
-	cin.tie(0);
-	
-	int n,i,j,aux;
-	int v[100001];
-	
+	int n,aux,i,ans,j;
 	while(cin >> n and n){
+		ans = 0;
 		for(i=0;i<n;i++){
-			cin >> v[i];
+			cin >> A[i];
+			B[i] = A[i];
 		}
-		i=-1;
-		int a = ShellSort(v,n);
-			
-		if((a+1)%2==0)
-			cout << "Marcelo" << endl;
-		else
+		sort(B.begin(),B.end());
+		for(i=0;i<n;i++){
+			if(A[i]!=B[i])
+				ans++;
+		}
+		if(ans%2==0)
 			cout << "Carlos" << endl;
+		else
+			cout << "Marcelo" << endl;
+			
+		for(i=0;i<n;i++)
+			cout << A[i] << " ";
+		cout << endl;
+		for(i=0;i<n;i++)
+			cout << B[i] << " ";
+		cout << endl;
 	}
+
 }
