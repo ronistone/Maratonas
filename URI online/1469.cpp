@@ -1,74 +1,125 @@
 #include <bits/stdc++.h>
 using namespace std;
-vector<int> idades;
-vector<vector<int> > grafoA;
-vector<bool> visitados;
-int idade;
-vector<int>posicao;
-void dfsI(int n){
-		if(visitados[n]==false){
-			visitados[n] = true;
-				for(int i=0 ;i<grafoA[n].size();i++){
-						if(idades[posicao[grafoA[n][i]]-1]<idade)
-							idade = idades[posicao[grafoA[n][i]]-1];
-						dfsI(posicao[grafoA[n][i]]-1);
-				}
+#define mp make_pair
+#define pb push_back
+#define F first
+#define S second
+#define SC1(n) scanf("%d",&n)
+#define SC2(n,m) scanf("%d %d",&n,&m)
+#define SC3(n,m,z) scanf("%d %d %d",&n,&m,&z)
+#define F1(i,n) for(i=1;i<=n;i++)
+#define F2(i,n,m) for(i=n;i<m;i++)
+#define MAX 10e5
+typedef long long int ll;
+int n,m,k;
+
+vector<vector<int> > Grafo(510);
+int idade[510],pessoa[510],vertice[510];
+
+inline void scanint(int *x)
+{
+	register char c = getchar_unlocked();
+	*x = 0;
+	for(; (c<48)||(c>57);c = getchar_unlocked());
+	for(; (c>47)&&(c<58);c = getchar_unlocked())
+		*x = (int)((((*x)<<1) + ((*x)<<3)) + c - 48);
+}
+inline void printint(int n)
+{
+	if(n == 0)
+	{
+		putchar_unlocked('0');
+		putchar_unlocked('\n');
+	}
+	else if(n == -1)
+	{
+		putchar_unlocked('-');
+		putchar_unlocked('1');
+		putchar_unlocked('\n');
+	}
+	else
+	{
+		char buf[11];
+		buf[10] = '\n';
+		int i = 9;
+		while(n)
+		{
+			buf[i--] = n % 10 + '0';
+			n /= 10;
 		}
+		while(buf[i] != '\n')
+			putchar_unlocked(buf[++i]);
+	}
 }
 
-
+int bfs(int from){
+	queue<int> q;
+	bool visi[n];
+	memset(visi,false,sizeof visi);
+	
+	q.push(from);
+	visi[from] = true;
+	int ans = MAX,i,V;
+	int aux = idade[vertice[from]];
+	idade[vertice[from]] = MAX;
+	
+	
+	while(!q.empty()){
+		V = q.front();
+		q.pop();
+		ans = min(idade[vertice[V]],ans);
+		for(i=0;i<Grafo[V].size();i++){
+			if(!visi[Grafo[V][i]]){
+				q.push(Grafo[V][i]);
+				visi[Grafo[V][i]] = true;
+			}
+		}
+		
+	}
+	idade[vertice[from]] = aux;
+	if(ans == MAX)
+		return -1;
+	else
+		return ans;
+}
 
 main(){
-	int v,a,ins,from,to,id;
-	int i,j,k,aux,b1,b2;
-	vector<int> aux1;
-	char O;
+	int i,j,aux,from,to,ans;
+	char C;
+	while(SC1(n)!=EOF){
+		scanint(&m);scanint(&k);
+		F1(i,n){
+			scanint(&aux);
+			Grafo[i].clear();
+			idade[i] = aux;
+			pessoa[i] = i;
+			vertice[i] = i;
+		}
+		
+		F1(i,m){
+			scanint(&from);scanint(&to);
+			Grafo[to].pb(from);
+		}
+		F1(i,k){
+			scanf("%c",&C);
+			scanint(&from);
+			if(C=='P'){
+				ans = bfs(pessoa[from]);
+				if(ans==-1)
+					printf("*\n");
+				else
+					printint(ans);
+			}
+			else{
+				scanint(&to);
+				aux = pessoa[from];
+				pessoa[from] = pessoa[to];
+				pessoa[to] = aux;
+				vertice[pessoa[from]] = from;
+				vertice[pessoa[to]] = to;
+			}
+		}
 	
-	while(cin >> v >> a >>ins){
-			for(i=0;i<v;i++){
-					cin >> id;
-					idades.push_back(id);
-					//grafo.push_back(aux);
-					grafoA.push_back(aux1);
-					visitados.push_back(false);
-					posicao.push_back(i+1);
-			}
-			for(i=0;i<a;i++){
-					cin >> from >> to;
-					//grafo[from-1].push_back(to-1);
-					grafoA[to-1].push_back(from-1);
-			}
-			for(i=0;i<ins;i++){
-					cin >> O;
-					if(O=='P'){
-							cin >> b1;
-							for(j=0;j<visitados.size();j++)visitados[j]= false;
-							if(grafoA[posicao[b1-1]-1].size()==0)
-								cout << "*" << endl;
-							else{
-								idade = idades[posicao[b1-1]-1];
-								dfsI(posicao[b1-1]-1);
-								cout << idade << endl;
-							}
-					}
-					else if(O=='T'){
-							cin >> b1 >> b2;
-							//grafoA[b1-1].swap(grafoA[b2-1]);
-							id = idades[posicao[b1-1]-1];
-							idades[posicao[b1-1]-1] = idades[posicao[b2-1]-1];
-							idades[posicao[b2-1]-1] = id;
-							//vector<int> ax;
-							//ax = grafoA[posicao[b1-1]-1];
-							//grafoA[posicao[b1-1]-1] = grafoA[posicao[b2-1]-1];
-							//grafoA[posicao[b2-1]-1] = ax;
-							id = posicao[b1-1];
-							posicao[b1-1] = posicao[b2-1];
-							posicao[b2-1] = id;
-					}
-			}
-			for(i=0;i<v;i++){
-					cout << "Posição " << i+1 << "idade: " << idades[i] << "posicao " << posicao[i] << endl;
-			}
 	}
-	
+
 }

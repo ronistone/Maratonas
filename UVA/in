@@ -1,11 +1,20 @@
-I c
-I f
-I a
-I h
-INFIXA
-PREFIXA
-POSFIXA
-P z
-P h
-I g
-INFIXA
+2
+
+a
+ab
+abc
+b
+*
+a ab
+a abc
+ab abc
+a b
+
+ab
+ac
+da
+ba
+ce
+aa
+*
+ab ba

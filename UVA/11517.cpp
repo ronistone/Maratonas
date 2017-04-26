@@ -1,21 +1,25 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+#define F first
+#define S second
+#define mp make_pair
 //typedef long long int ll;
+typedef pair<int,int> ii;
 
 int M[105];
-int dp[105][20001],w,n;
+ii dp[105][20001],w,n;
 
-inline int solve(int current,int sum){
+inline ii solve(int current,int sum){
 	
-	if(sum >= w) return dp[current][sum] = sum;
-	if(current >= n) return INT_MAX;
+	if(sum >= w) return mp(dp[current][sum] = sum,);
+	if(current >= n) return mp(INT_MAX,INT_MAX);
 	
 	if(dp[current][sum]!=-1) return dp[current][sum];
 	
-	int ans = min(solve(current+1,sum+M[current]),solve(current+1,sum));
+	ii ans = min(solve(current+1,sum+M[current]),solve(current+1,sum));
 	
-	return dp[current][sum] = ans;
+	return mp(dp[current][sum] = ans, );
 }
 int cont;
 inline int print(int current,int sum){
@@ -47,7 +51,7 @@ main(){
 		for(int i=0;i<n;i++)
 			cin >> M[i];
 		memset(dp,-1,sizeof dp);
-		cout << solve(0,0);
-		cout << " " << print(0,0) << endl;
+		cout << solve(0,0,0).F << solve(0,0,0).S;
+		//cout << " " << print(0,0) << endl;
 	}
 }
