@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-
 int w;
 vector<int> car;
 int dp[10001][10001];
@@ -31,12 +30,9 @@ void print(int current, int s1, int s2){
 	}
 	
 }
-
 main(){
-	int n,aux;
-	
+	int n,aux;	
 	scanf("%d",&n);
-	
 	for(int k=0;k<n;k++){
 		scanf("%d",&w);
 		w*=100;
@@ -51,6 +47,4 @@ main(){
 		if(k<n-1)
 			puts("");
 	}
-
-
 }

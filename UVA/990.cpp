@@ -38,8 +38,6 @@ inline ll knapsack(){
 	for(int i=V.size()-1;i>=0;i--)
 		cout << V[i].first << " " << V[i].second << endl;
 }
-
-
 main(){
 	bool f = true;
 	while(cin >> T >> w){

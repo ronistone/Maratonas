@@ -25,24 +25,16 @@ void unionF(int i,int j){
 		}
 	}
 }
-
 main(){
-	//ios_base::sync_with_stdio(0);
-	//cin.tie(0);
 	int i,j,k;
 	string a,b;
 
 	cin >> n;
-	
+
 	for(i=0;i<n;i++){
-
 		cin >> m;
-
 		for(j=0;j<m;j++){
-
-//			cin.ignore();
 			cin >> a >> b;
-
 			if(!mapa.count(a)){
 				int aux = mapa.size();
 				mapa[a] = aux;
@@ -56,8 +48,7 @@ main(){
 				parent.push_back(-1);
 				filhos.push_back(1);
 				r.push_back(0);
-			}
-			
+			}		
 			unionF(mapa[a],mapa[b]);
 			cout << filhos[findSet(mapa[a])] << endl;
 		}
@@ -66,5 +57,4 @@ main(){
 		filhos.clear();
 		r.clear();
 	}
-	
 }

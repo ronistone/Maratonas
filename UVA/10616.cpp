@@ -55,14 +55,6 @@ main(){
 			scanf("%d %d",&d,&m);
 			printf("QUERY %d: %lld\n",i+1,solve(0,0,0));
 			print(0,0,0);
-			/*for(int j=0;j<=n;j++){
-				for(int k=0;k<=m;k++){
-					for(int l=0;l<d;l++){
-						cout << dp[j][k][k] << "   ";
-					}
-				}
-				cout << endl;
-			}*/
 		}
 	}
 }
