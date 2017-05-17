@@ -25,8 +25,6 @@ void kahn(){
 	}
 
 }
-
-
 main(){
 	int i,j,k,cont=1;
 	string e,from,to;

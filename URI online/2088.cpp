@@ -1,58 +1,55 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define F first
-#define S second
-#define mp make_pair
-#define pb push_back
-pair<double,double> pontos[510];
-vector<pair<double,pair<int,int> > > arestas;
-int parent[510];
 
+double V[16][16];
+vector<pair<int,int> > P;
+int n;
 
-inline double calcD(int i,int j){
-	return sqrt((pontos[i].F - pontos[j].F)*(pontos[i].F - pontos[j].F) + (pontos[i].S - pontos[j].S)*(pontos[i].S - pontos[j].S));
+double dp[20][1 << 16];
+
+inline double calc(int i,int j){
+	return sqrt((P[i].first-P[j].first)*(P[i].first-P[j].first) + (P[i].second - P[j].second)*(P[i].second - P[j].second));
 }
-inline int findset(int x){
-	if(x!=parent[x])
-		parent[x] = findset(parent[x]);
-	return parent[x];
-}
-inline void UNION(int x,int y){
-	parent[x] = parent[y];	
-}
-inline double kruskal(){
-	int pu,pv;
-	double ans = 0;
-	sort(arestas.begin(),arestas.end());
-	for(int i=0;i<arestas.size();i++){
-		pu = findset(arestas[i].S.F);
-		pv = findset(arestas[i].S.S);
-		if(pu!=pv){
-			ans += arestas[i].F;
-			UNION(pv,pu);
-		}
+
+double solve(int current, int mask){
+	if(mask == ((1<<(n+1))-1)){
+		return V[current][0];
 	}
+	
+	if(dp[current][mask]!=-1) return dp[current][mask];
+	
+	double ans = 1e9 + 10;
+	
+	for(int i=1;i<=n;i++){
+		if(!(mask & (1<<i)))
+			ans = min(solve(i,mask | (1<<i))+V[current][i],ans);
+	}
+	return dp[current][mask] = ans;
 }
 
 
 main(){
-	int n;
-	while(cin >> n){
-		for(int i=0;i<n;i++){
-			cin >> pontos[i].F >> pontos[i].S;
-			parent[i] = i;
-		}
-		for(int i=0;i<n;i++){
-			for(int j=0;j<n;j++){
-				if(i!=j)
-					arestas.pb(mp(calcD(i,j),mp(i,j)));
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	int x,y,a,b;
+	while(cin >> n and n){
+		P.clear();
+		for(int i=0;i<=n;i++){
+			for(int j=0;j<=(1<<(n+1));j++){
+				dp[i][j] = -1;
 			}
 		}
-		double ans = kruskal();
-		cout << fixed << setprecision(2) << ans << endl;
-		arestas.clear();
+		cin >> x >> y;
+		P.push_back(make_pair(x,y));
+		for(int i=1;i<=n;i++){
+			cin >> a >> b;
+			P.push_back(make_pair(a,b));
+		}
+		for(int i=0;i<=n;i++){
+			for(int j=0;j<=n;j++){
+				V[i][j] = calc(i,j);
+			}
+		}
+		cout << fixed << setprecision(2) << solve(0,1) << endl;
 	}
-	
-
-
 }
