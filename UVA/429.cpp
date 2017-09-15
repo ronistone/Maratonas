@@ -51,7 +51,7 @@ main(){
 	for(int k=0;k<t;k++){
 		if(k!=0)
 			cout << endl;
-		cin.ignore();
+		//cin.ignore();
 		cont = 0;
 		while(getline(cin,P[cont]) and P[cont++]!="*");
 		while(getline(cin,e) and e.size()){
