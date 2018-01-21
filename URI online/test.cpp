@@ -1,75 +1,77 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int BIT[100100],A[100010];
-int n,aux,x;
+typedef long long int ll;
 
-inline int query(int i){
-	int ans = 0;
-	for(;i>0;i-=(i&(-i)))
-		ans+= BIT[i];
-	return ans;
-}
-inline void update(int i,int value){
-	for(;i<=n;i+=(i&(-i)))
-		BIT[i] += value;
-}
-
-inline void scanint(int *x)
-{
-	register char c = getchar_unlocked();
-	*x = 0;
-	for(; (c<48)||(c>57);c = getchar_unlocked());
-	for(; (c>47)&&(c<58);c = getchar_unlocked())
-		*x = (int)((((*x)<<1) + ((*x)<<3)) + c - 48);
-}
-inline void printint(int n)
-{
-	if(n == 0)
-	{
-		putchar_unlocked('0');
-		putchar_unlocked('\n');
+struct no{
+	no *nxt[26];
+	no *pai, *root;
+	ll qtdNo,fim;
+	char c;
+	
+	no(char k){
+		for(int i=0;i<26;i++) nxt[i] = NULL;
+		pai = root = this;
+		qtdNo = fim = 0;
+		c = k;
 	}
-	else if(n == -1)
-	{
-		putchar_unlocked('-');
-		putchar_unlocked('1');
-		putchar_unlocked('\n');
-	}
-	else
-	{
-		char buf[11];
-		buf[10] = '\n';
-		int i = 9;
-		while(n)
-		{
-			buf[i--] = n % 10 + '0';
-			n /= 10;
+	
+	void insert(const string s, ll i){
+		
+		if(i == s.size()){
+			fim = 1;
+			return;
 		}
-		while(buf[i] != '\n')
-			putchar_unlocked(buf[++i]);
+		ll c = s[i] - 'a';
+		if(!nxt[c]){
+			nxt[c] = new no(s[i]);
+			nxt[c] -> pai = this;
+			nxt[c] -> root = root;
+			root -> qtdNo++;
+		}
+		nxt[c] -> insert(s,i+1);
 	}
-}
+	bool query(string s, ll i){
+		
+		if(i == s.size()) return false;
+		
+		ll c = s[i] - 'a';
+		if(!nxt[c]) return false;
+		
+		if(nxt[c] -> fim) return true;
+		else		return nxt[c] -> query(s,i+1);
+	}
+	
+};
+
 
 
 main(){
-	//ios_base::sync_with_stdio(0);
-	//cin.tie(0);
-	char e;
-	//cin >> n;
-	scanint(&n);
-	for(int i=1;i<=n;i++){
-		//cin >> A[i];
-		scanint(&A[i]);
-		update(i,A[i]);
-	}
-	while(scanf("%c%d",&e,&x)!=EOF){
-		if(e=='?'){
-			printint(query(x-1));
-			//cout << query(x-1) << endl;
+
+	ll n,qtd;
+	string e;
+	bool fail;
+	no *trie = new no('*');
+	while(cin >> n and n){
+		cin.ignore();
+		fail = false;
+		for(int i=0;i<n;i++){
+			getline(cin, e);
+			
+			if(!fail){
+				fail = trie -> query(e,0);
+				if(!fail){
+					qtd = trie -> qtdNo;
+					trie -> insert(e,0);
+					if(qtd==trie -> qtdNo) fail = true;
+				}
+			}
 		}
-		else if(e=='a'){
-			update(x,-A[x]);
-		}
+		if(!fail)
+			cout << "Conjunto Bom" << endl;
+		else
+			cout << "Conjunto Ruim" << endl;
+		trie = new no('*');
 	}
+
 }
